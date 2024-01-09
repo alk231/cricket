@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Cricket</title>
+  <link href="cricket.css" rel="stylesheet">
+</head>
+<body>
+  <h1>Bat Ball Stump Game</h1>
+  <button class="cricket" onclick="
+  user='bat';
+  comp=Math.random()*3;
+  choice=compChoice(comp);
+  who_won(user,choice)";><img src="bat.jpeg" alt="bat"class="choice-image" ></button>
+  <button class="cricket" onclick="
+  user='ball';
+  comp=Math.random()*3;
+  choice=compChoice(comp);
+  who_won(user,choice);"><img src="ball1.jpeg" alt="ball"class="choice-image"></button>
+  <button class="cricket" onclick="
+  user='stump';
+  comp=Math.random()*3;
+  choice=compChoice(comp);
+  who_won(user,choice);"><img src="stump.jpeg" alt="stump"class="choice-image"></button>
+  <h2 id="id1"></h2>
+  <h2 id="id2"></h2>
+  <h2 id="id3"></h2>
+  <h1 id="id4"></h1>
+  <button onclick="resetGame(user,choice);">Reset</button>
+</body>
+<script>
+  let user,comp,choice;
+  let score={
+    lost:0,
+    win:0,
+    tie:0,
+    displayScore:function()
+    {
+      return `win:${score.win}, lost:${score.lost},tie:${score.tie}`
+      
+    }
+  }
+  const storedScore = localStorage.getItem('cricketScore'); 
+  if (storedScore) {
+    const parsedScore = JSON.parse(storedScore);
+    score.win = parsedScore.win;
+    score.lost = parsedScore.lost;
+    score.tie = parsedScore.tie;
+  }
+  function compChoice(comp)
+  {
+    if(comp<=1)
+    {
+      comp='bat';
+    }
+    else if(comp<=2){
+    comp='ball';
+          }
+    else
+    {
+      comp='stump';
+    }
+    return comp;
+  }
+  function who_won(user,choice)
+  {
+    document.querySelector("#id1").innerText=`user choice is ${user}`;
+    document.querySelector("#id2").innerText=`computer choice is ${choice}`;
+    if(user=='bat' && choice=='bat'||user=='ball' && choice=='ball'|| user=='stump' && choice=='stump')
+    {
+      score.tie++;
+      alert(`user choice is ${user}. computer choice is ${choice}.
+      it's a tie
+      ${displayScore()}`);
+      document.querySelector("#id3").innerText=" it's a tie";
+    }
+    else if(user=='bat' && choice=='ball'||user=='ball' && choice=='stump'||user=='stump' && choice=='bat')
+    {
+      score.win++;
+      alert(`user choice is ${user}. computer choice is ${choice}.
+      user won
+      ${score.displayScore()}`);
+      document.querySelector("#id3").innerText="user won";
+    }
+    else
+    {
+      score.lost++
+      alert(`user choice is ${user}. computer choice is ${choice}.
+      computer won
+      ${score.displayScore()}`);
+      document.querySelector("#id3").innerText="computer won";
+    }
+    localStorage.setItem('cricketScore', JSON.stringify(score));
+    document.querySelector("#id4").innerText=`win:${score.win}, lost:${score.lost},tie:${score.tie}`;
+  }
+  function resetGame(user,choice) {
+    // Reset the scores
+    score.win = 0;
+    score.lost = 0;
+    score.tie = 0;
+    // Save the reset scores to local storage
+    localStorage.setItem('cricketScore', JSON.stringify(score));
+    document.querySelector("#id4").innerText=`win:${score.win}, lost:${score.lost},tie:${score.tie}`;
+    document.querySelector('#id1').innerText = ''; // Clear user choice
+    document.querySelector('#id2').innerText = ''; // Clear computer choice
+    document.querySelector('#id3').innerText = ''; 
+  }
+  
+</script>
+</html>

@@ -1,0 +1,16 @@
+body{
+  text-align: center;
+}
+.cricket
+{
+  height:100px;
+  width:100px;
+  border:none;
+  margin:10px;
+  background-color: aqua;
+  border-radius: 45px;
+}
+.choice-image
+{
+  height:75px;
+}
